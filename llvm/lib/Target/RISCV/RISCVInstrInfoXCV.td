@@ -829,6 +829,13 @@ let Predicates = [HasVendorXCVmac] in {
   def : PatCoreVMacGprGprGpr<"mac", "MAC">;
   def : PatCoreVMacGprGprGpr<"msu", "MSU">;
 
+  def : Pat<(i32 (add GPR:$rd, (mul_oneuse GPR:$rs1, GPR:$rs2))),
+            (CV_MAC GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(i32 (add (mul_oneuse GPR:$rs1, GPR:$rs2), GPR:$rd)),
+            (CV_MAC GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(i32 (sub GPR:$rd, (mul_oneuse GPR:$rs1, GPR:$rs2))),
+            (CV_MSU GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+
   def : PatCoreVMacGprGprUimm5<"muluN", "MULUN">;
   def : PatCoreVMacGprGprUimm5<"mulhhuN", "MULHHUN">;
   def : PatCoreVMacGprGprUimm5<"mulsN", "MULSN">;
